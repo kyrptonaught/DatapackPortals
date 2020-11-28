@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "customportals",
+  "version": "0.0.4-1.16",
+  "name": "Custom Portals",
+  "description": "Custom Portals",
+  "authors": [
+    "kyrptonaught"
+  ],
+  "contact": {
+    "homepage": "https://github.com/kyrptonaught/customportals",
+    "sources": "https://github.com/kyrptonaught/customportals"
+  },
+  "license": "MIT",
+  "icon": "assets/customportals/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.kyrptonaught.customportals.CustomPortalsMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  }
+}
