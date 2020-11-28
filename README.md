@@ -1,20 +1,22 @@
 
 # Datapack Portals
-Create custom portals using [CustomPortalApi](https://github.com/kyrptonaught/customportalapi) with datapacks
+Create custom portals using [CustomPortalApi](https://github.com/kyrptonaught/customportalapi) with datapacks.
+
 Inside your datapack create a "portals" folder, this is where you'll put all your custom portals. There is no set limit of allowed portals, as long as there aren't any duplicate frame blocks.
+
 Here is an example file: 
 stoneendportal.json
 
      {  
-	    "block": "minecraft:end_stone",  
-	    "dim": "minecraft:the_nether",  
+	    "block": "minecraft:stone",  
+	    "dim": "minecraft:the_end",  
 	    "r": 66,  
 	    "g": 135,  
 	    "b": 245,
      }
 
  - block: the block used for the frame. 
- - dim: the dim id
+ - dim: the dim id to travel to
  -  r, g, b: the
    color to tint the portal
 
