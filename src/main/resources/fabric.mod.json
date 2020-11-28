@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
-  "id": "customportals",
-  "version": "0.0.4-1.16",
-  "name": "Custom Portals",
-  "description": "Custom Portals",
+  "id": "datapackportals",
+  "version": "0.0.1-1.16",
+  "name": "Datapack Portals",
+  "description": "Create custom portals using Datapacks!",
   "authors": [
     "kyrptonaught"
   ],
   "contact": {
-    "homepage": "https://github.com/kyrptonaught/customportals",
-    "sources": "https://github.com/kyrptonaught/customportals"
+    "homepage": "https://github.com/kyrptonaught/DatapackPortals",
+    "sources": "https://github.com/kyrptonaught/DatapackPortals"
   },
   "license": "MIT",
-  "icon": "assets/customportals/icon.png",
+  "icon": "assets/datapackportals/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.kyrptonaught.customportals.CustomPortalsMod"
+      "net.kyrptonaught.datapackportals.DatapackPortalsMod"
     ]
   },
   "depends": {

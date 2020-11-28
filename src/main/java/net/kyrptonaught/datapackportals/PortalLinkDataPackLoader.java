@@ -1,10 +1,11 @@
-package net.kyrptonaught.customportals;
+package net.kyrptonaught.datapackportals;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -15,7 +16,7 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 
 public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReloadListener {
-    public static final Identifier ID = new Identifier(CustomPortalsMod.MOD_ID, "portal_json");
+    public static final Identifier ID = new Identifier(DatapackPortalsMod.MOD_ID, "portal_json");
     private static final Gson GSON = (new GsonBuilder()).create();
 
     @Override
@@ -31,7 +32,7 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
                 JsonParser JsonParser = new JsonParser();
                 JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
                 PortalLink portalLink = GSON.fromJson(jsonObj, PortalData.class).toLink();
-                net.kyrptonaught.customportalapi.CustomPortalsMod.portals.put(Registry.BLOCK.get(portalLink.block), portalLink);
+                CustomPortalApiRegistry.addPortal(Registry.BLOCK.get(portalLink.block), portalLink);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -40,12 +41,17 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
     }
 
     public static class PortalData {
-        String block;
-        String dim;
-        int color;
+        public String block;
+        public String ignitionBlock;
+        public String dim;
+        public String returnDim;
+        public int r, g, b;
 
         public PortalLink toLink() {
-            return new PortalLink(new Identifier(block), new Identifier(dim), color);
+            PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), CustomPortalApiRegistry.getColorFromRGB(r, g, b));
+            if (ignitionBlock != null) link.ignitionBlock = new Identifier(ignitionBlock);
+            if (returnDim != null) link.returnDimID = new Identifier(returnDim);
+            return link;
         }
     }
 }
