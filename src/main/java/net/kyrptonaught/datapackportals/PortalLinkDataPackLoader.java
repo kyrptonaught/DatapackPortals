@@ -26,13 +26,15 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
 
     @Override
     public void apply(ResourceManager manager) {
+        DatapackPortalsMod.removeOldPortalsFromRegistry();
         Collection<Identifier> resources = manager.findResources("portals", (string) -> string.endsWith(".json"));
         for (Identifier id : resources) {
             try {
                 JsonParser JsonParser = new JsonParser();
                 JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
                 PortalLink portalLink = GSON.fromJson(jsonObj, PortalData.class).toLink();
-                CustomPortalApiRegistry.addPortal(Registry.BLOCK.get(portalLink.block), portalLink);
+
+                DatapackPortalsMod.registerDatapackPortal(portalLink);
 
             } catch (IOException e) {
                 e.printStackTrace();

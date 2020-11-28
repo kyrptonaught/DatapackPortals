@@ -12,7 +12,7 @@ stoneendportal.json
 	    "dim": "minecraft:the_end",  
 	    "r": 66,  
 	    "g": 135,  
-	    "b": 245,
+	    "b": 245
      }
 
  - block: the block used for the frame. 
