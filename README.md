@@ -22,7 +22,8 @@ stoneendportal.json
 
 There are also some optional arguments
 
- - ignitionBlock: the source for ignition the portal, currently only "fire" and "water" are supported with more support coming eventually(tm). Fire being flint and steel, water being water bucket aether style
+ - ignitionType: the type of ignition to use. Options are "BLOCK", "FLUID", "ITEM".
+ - ignitionBlock: the id for block/item/fluid for ignition of the portal, the only supported block being fire : "minecraft:fire". All items and fluids are supported.
  - returnDim: the dimmension to return to, allows for specifying a location other than the overworld to return to
 
 That is all! Portals will function exactly like vanilla nether portals do
