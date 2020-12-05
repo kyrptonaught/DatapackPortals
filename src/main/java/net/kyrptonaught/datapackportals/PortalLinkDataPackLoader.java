@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
+import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -44,14 +45,22 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
 
     public static class PortalData {
         public String block;
-        public String ignitionBlock;
+        public String ignitionType;
+        public String ignitionSource;
         public String dim;
         public String returnDim;
         public int r, g, b;
 
         public PortalLink toLink() {
             PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), CustomPortalApiRegistry.getColorFromRGB(r, g, b));
-            if (ignitionBlock != null) link.ignitionBlock = new Identifier(ignitionBlock);
+            if (ignitionType != null) {
+                if (ignitionType.equalsIgnoreCase("block"))
+                    link.portalIgnitionSource = PortalIgnitionSource.FIRE;
+                else if (ignitionType.equalsIgnoreCase("fluid"))
+                    link.portalIgnitionSource = PortalIgnitionSource.FluidSource(Registry.FLUID.get(new Identifier(ignitionSource)));
+                else if (ignitionType.equalsIgnoreCase("item"))
+                    link.portalIgnitionSource = PortalIgnitionSource.ItemUseSource(Registry.ITEM.get(new Identifier(ignitionSource)));
+            }
             if (returnDim != null) link.returnDimID = new Identifier(returnDim);
             return link;
         }

@@ -26,8 +26,8 @@ dependencies {
 	include "blue.endless:jankson:+"
 
 	//customportalapi
-	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta15-1.16'
-	include 'net.kyrptonaught:customportalapi:0.0.1-beta15-1.16'
+	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta16-1.16'
+	include 'net.kyrptonaught:customportalapi:0.0.1-beta16-1.16'
 }
 
 processResources {
