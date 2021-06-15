@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
+import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.resource.ResourceManager;
@@ -27,13 +28,12 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
 
     @Override
     public void apply(ResourceManager manager) {
-        DatapackPortalsMod.removeOldPortalsFromRegistry();
         Collection<Identifier> resources = manager.findResources("portals", (string) -> string.endsWith(".json"));
         for (Identifier id : resources) {
             try {
                 JsonParser JsonParser = new JsonParser();
                 JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
-                PortalLink portalLink = GSON.fromJson(jsonObj, PortalData.class).toLink();
+                PortalLink portalLink = GSON.fromJson(jsonObj, PortalData.class).toLink(id);
 
                 DatapackPortalsMod.registerDatapackPortal(portalLink);
 
@@ -51,16 +51,20 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
         public String returnDim;
         public int r, g, b;
 
-        public PortalLink toLink() {
+        public PortalLink toLink(Identifier identifier) {
+            if (block == null) DatapackPortalsMod.logerror(identifier + " missing field: block");
+            if (ignitionType == null) DatapackPortalsMod.logerror(identifier + " missing field: ignitionType");
+            if (ignitionSource == null) DatapackPortalsMod.logerror(identifier + " missing field: ignitionSource");
+            if (dim == null) DatapackPortalsMod.logerror(identifier + " missing field: dim");
+
             PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), CustomPortalApiRegistry.getColorFromRGB(r, g, b));
-            if (ignitionType != null) {
-                if (ignitionType.equalsIgnoreCase("block"))
-                    link.portalIgnitionSource = PortalIgnitionSource.FIRE;
-                else if (ignitionType.equalsIgnoreCase("fluid"))
-                    link.portalIgnitionSource = PortalIgnitionSource.FluidSource(Registry.FLUID.get(new Identifier(ignitionSource)));
-                else if (ignitionType.equalsIgnoreCase("item"))
-                    link.portalIgnitionSource = PortalIgnitionSource.ItemUseSource(Registry.ITEM.get(new Identifier(ignitionSource)));
-            }
+            if (ignitionType.equalsIgnoreCase("block"))
+                link.portalIgnitionSource = PortalIgnitionSource.FIRE;
+            else if (ignitionType.equalsIgnoreCase("fluid"))
+                link.portalIgnitionSource = PortalIgnitionSource.FluidSource(Registry.FLUID.get(new Identifier(ignitionSource)));
+            else if (ignitionType.equalsIgnoreCase("item"))
+                link.portalIgnitionSource = PortalIgnitionSource.ItemUseSource(Registry.ITEM.get(new Identifier(ignitionSource)));
+
             if (returnDim != null) link.returnDimID = new Identifier(returnDim);
             return link;
         }

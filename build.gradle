@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -13,21 +13,23 @@ group = project.maven_group
 minecraft {
 }
 repositories {
-	maven {url  "https://dl.bintray.com/kyrptonaught/customportalapi"}
+	maven {
+		url = "http://maven.kyrptonaught.dev"
+		allowInsecureProtocol = true
+	}
 }
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	//mappings minecraft.officialMojangMappings()
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
-	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	
 	modApi "blue.endless:jankson:+"
 	include "blue.endless:jankson:+"
 
 	//customportalapi
-	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta16-1.16'
-	include 'net.kyrptonaught:customportalapi:0.0.1-beta16-1.16'
+	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta32-1.16'
+	include 'net.kyrptonaught:customportalapi:0.0.1-beta32-1.16'
 }
 
 processResources {
@@ -62,23 +64,3 @@ jar {
 	from "LICENSE"
 }
 
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(jar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-
-	// select the repositories you want to publish to
-	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
-	}
-}
