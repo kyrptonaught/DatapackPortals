@@ -27,46 +27,20 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
     }
 
     @Override
-    public void apply(ResourceManager manager) {
-        Collection<Identifier> resources = manager.findResources("portals", (string) -> string.endsWith(".json"));
-        for (Identifier id : resources) {
-            try {
-                JsonParser JsonParser = new JsonParser();
-                JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
-                PortalLink portalLink = GSON.fromJson(jsonObj, PortalData.class).toLink(id);
+    public void reload(ResourceManager manager) {
+        for (PortalTypeRecord portalType : DatapackPortalsMod.PortalTypeRegisters) {
+            Collection<Identifier> resources = manager.findResources(portalType.folderName(), (string) -> string.endsWith(".json"));
+            for (Identifier id : resources) {
+                try {
+                    JsonParser JsonParser = new JsonParser();
+                    JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
+                    PortalLink portalLink = ((PortalData) GSON.fromJson(jsonObj, portalType.Deserializer())).toLink(id);
+                    DatapackPortalsMod.registerDatapackPortal(portalLink);
 
-                DatapackPortalsMod.registerDatapackPortal(portalLink);
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-    }
-
-    public static class PortalData {
-        public String block;
-        public String ignitionType;
-        public String ignitionSource;
-        public String dim;
-        public String returnDim;
-        public int r, g, b;
-
-        public PortalLink toLink(Identifier identifier) {
-            if (block == null) DatapackPortalsMod.logerror(identifier + " missing field: block");
-            if (ignitionType == null) DatapackPortalsMod.logerror(identifier + " missing field: ignitionType");
-            if (ignitionSource == null) DatapackPortalsMod.logerror(identifier + " missing field: ignitionSource");
-            if (dim == null) DatapackPortalsMod.logerror(identifier + " missing field: dim");
-
-            PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), CustomPortalApiRegistry.getColorFromRGB(r, g, b));
-            if (ignitionType.equalsIgnoreCase("block"))
-                link.portalIgnitionSource = PortalIgnitionSource.FIRE;
-            else if (ignitionType.equalsIgnoreCase("fluid"))
-                link.portalIgnitionSource = PortalIgnitionSource.FluidSource(Registry.FLUID.get(new Identifier(ignitionSource)));
-            else if (ignitionType.equalsIgnoreCase("item"))
-                link.portalIgnitionSource = PortalIgnitionSource.ItemUseSource(Registry.ITEM.get(new Identifier(ignitionSource)));
-
-            if (returnDim != null) link.returnDimID = new Identifier(returnDim);
-            return link;
         }
     }
 }

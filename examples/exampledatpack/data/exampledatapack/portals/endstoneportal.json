@@ -1,0 +1,10 @@
+{
+  "block": "minecraft:end_stone",
+  "dim": "minecraft:the_end",
+  "ignitionType": "ITEM",
+  "ignitionSource": "minecraft:stick",
+  "r": 102,
+  "g": 179,
+  "b": 255
+}
+
