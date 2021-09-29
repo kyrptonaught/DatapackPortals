@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -13,10 +13,7 @@ group = project.maven_group
 minecraft {
 }
 repositories {
-	maven {
-		url = "http://maven.kyrptonaught.dev"
-		allowInsecureProtocol = true
-	}
+	maven {url = "https://maven.kyrptonaught.dev"}
 }
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -24,8 +21,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
-	modApi "blue.endless:jankson:+"
-	include "blue.endless:jankson:+"
+	modApi 'blue.endless:jankson:1.2.1'
+	include "blue.endless:jankson:1.2.1"
 
 	//customportalapi
 	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta32-1.16'
@@ -35,13 +32,8 @@ dependencies {
 processResources {
 	inputs.property "version", project.version
 
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
+	filesMatching("fabric.mod.json") {
 		expand "version": project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
 	}
 }
 
@@ -64,3 +56,25 @@ jar {
 	from "LICENSE"
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifactId archivesBaseName
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+		}
+	}
+	repositories {
+		maven {
+			url 's3://maven.kyrptonaught.dev'
+			credentials(AwsCredentials) {
+				accessKey = System.getenv('maven-key-id')
+				secretKey = System.getenv('maven-key')
+			}
+		}
+	}
+}

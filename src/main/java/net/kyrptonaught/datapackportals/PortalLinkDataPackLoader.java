@@ -27,7 +27,7 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
     }
 
     @Override
-    public void apply(ResourceManager manager) {
+    public void reload(ResourceManager manager) {
         Collection<Identifier> resources = manager.findResources("portals", (string) -> string.endsWith(".json"));
         for (Identifier id : resources) {
             try {
