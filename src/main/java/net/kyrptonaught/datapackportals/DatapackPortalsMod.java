@@ -5,8 +5,11 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.PerWorldPortals;
+import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.networking.PortalRegistrySync;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
+import net.kyrptonaught.customportalapi.util.ColorUtil;
+import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.block.Block;
 import net.minecraft.resource.ResourceType;
@@ -26,7 +29,7 @@ public class DatapackPortalsMod implements ModInitializer {
     public void onInitialize() {
         registerPortalType("portals" , DefaultPortalData.class);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new PortalLinkDataPackLoader());
-        PortalRegistrySync.enableSyncOnPlayerJoin();
+
     }
 
     public static void registerDatapackPortal(PortalLink portalLink) {
@@ -54,7 +57,7 @@ public class DatapackPortalsMod implements ModInitializer {
             if (ignitionSource == null) DatapackPortalsMod.logerror(identifier + " missing field: ignitionSource");
             if (dim == null) DatapackPortalsMod.logerror(identifier + " missing field: dim");
 
-            PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), CustomPortalApiRegistry.getColorFromRGB(r, g, b));
+            PortalLink link = new PortalLink(new Identifier(block), new Identifier(dim), ColorUtil.getColorFromRGB(r, g, b));
             if (ignitionType.equalsIgnoreCase("block"))
                 link.portalIgnitionSource = PortalIgnitionSource.FIRE;
             else if (ignitionType.equalsIgnoreCase("fluid"))
