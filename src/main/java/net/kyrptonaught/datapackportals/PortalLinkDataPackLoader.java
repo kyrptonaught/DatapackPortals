@@ -5,17 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
-import net.kyrptonaught.customportalapi.CustomPortalsMod;
-import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.util.PortalLink;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collection;
+import java.util.Map;
 
 public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReloadListener {
     public static final Identifier ID = new Identifier(DatapackPortalsMod.MOD_ID, "portal_json");
@@ -29,11 +26,10 @@ public class PortalLinkDataPackLoader implements SimpleSynchronousResourceReload
     @Override
     public void reload(ResourceManager manager) {
         for (PortalTypeRecord portalType : DatapackPortalsMod.PortalTypeRegisters) {
-            Collection<Identifier> resources = manager.findResources(portalType.folderName(), (string) -> string.endsWith(".json"));
-            for (Identifier id : resources) {
+            Map<Identifier, Resource> resources = manager.findResources(portalType.folderName(), (identifier) -> identifier.getPath().endsWith(".json"));
+            for (Identifier id : resources.keySet()) {
                 try {
-                    JsonParser JsonParser = new JsonParser();
-                    JsonObject jsonObj = (JsonObject) JsonParser.parse(new InputStreamReader(manager.getResource(id).getInputStream()));
+                    JsonObject jsonObj = (JsonObject) JsonParser.parseReader(new InputStreamReader(resources.get(id).getInputStream()));
                     PortalLink portalLink = ((PortalData) GSON.fromJson(jsonObj, portalType.Deserializer())).toLink(id);
                     DatapackPortalsMod.registerDatapackPortal(portalLink);
 
