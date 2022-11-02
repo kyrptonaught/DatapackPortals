@@ -1,0 +1,9 @@
+{
+  "block": "minecraft:dirt",
+  "command": "/tp @p ~ ~10 ~",
+  "ignitionType": "ITEM",
+  "ignitionSource": "minecraft:stick",
+  "r": 102,
+  "g": 179,
+  "b": 255
+}
