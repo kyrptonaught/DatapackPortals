@@ -1,4 +1,4 @@
-package net.kyrptonaught.datapackportals;
+package net.kyrptonaught.datapackportals.portalTypes;
 
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.minecraft.util.Identifier;

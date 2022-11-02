@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -20,13 +20,10 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
-	modApi "blue.endless:jankson:+"
-	include "blue.endless:jankson:+"
 
 	//customportalapi
-	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta51-1.19'
-	include 'net.kyrptonaught:customportalapi:0.0.1-beta51-1.19'
+	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta54-1.19'
+	include 'net.kyrptonaught:customportalapi:0.0.1-beta54-1.19'
 }
 processResources {
 	inputs.property "version", project.version
