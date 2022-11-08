@@ -1,0 +1,10 @@
+{
+  "block": "minecraft:sand",
+  "command": "/tp @p ~ ~10 ~",
+  "ignitionType": "FLUID",
+  "ignitionSource": "minecraft:water",
+  "portalType" : "flat",
+  "r": 102,
+  "g": 179,
+  "b": 255
+}
