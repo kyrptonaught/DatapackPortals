@@ -1,8 +1,11 @@
 package net.kyrptonaught.datapackportals;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.PerWorldPortals;
+import net.kyrptonaught.customportalapi.networking.PortalRegistrySync;
 import net.kyrptonaught.customportalapi.util.PortalLink;
 import net.kyrptonaught.datapackportals.portalTypes.CMDPortal;
 import net.kyrptonaught.datapackportals.portalTypes.DefaultPortal;
@@ -22,6 +25,14 @@ public class DatapackPortalsMod implements ModInitializer {
         DatapackPortalsMod.registerPortalType("cmdportals", CMDPortal.class);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new PortalLinkDataPackLoader());
 
+        /*
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            for (PortalLink link : CustomPortalApiRegistry.getAllPortalLinks()) {
+                sender.sendPacket(PortalRegistrySync.createPacket(link));
+            }
+        });
+
+         */
     }
 
     public static void registerDatapackPortal(PortalLink portalLink) {
@@ -32,7 +43,4 @@ public class DatapackPortalsMod implements ModInitializer {
         PortalTypeRegisters.add(new PortalTypeRecord(folderPath, deserializer));
     }
 
-    public static void logerror(String message) {
-        System.out.println("[" + MOD_ID + "]: " + message);
-    }
 }
