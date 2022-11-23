@@ -31,7 +31,6 @@ public class DatapackPortalsMod implements ModInitializer {
                 sender.sendPacket(PortalRegistrySync.createPacket(link));
             }
         });
-
          */
     }
 
