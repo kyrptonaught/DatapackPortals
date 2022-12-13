@@ -2,9 +2,8 @@ package net.kyrptonaught.datapackportals.portalTypes;
 
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.kyrptonaught.customportalapi.util.PortalLink;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 public class DefaultPortal implements PortalData {
     public String block;
     public String ignitionType;
@@ -23,9 +22,9 @@ public class DefaultPortal implements PortalData {
                 .tintColor(r, g, b);
 
         if (ignitionType.equalsIgnoreCase("fluid"))
-            builder.lightWithFluid(Registry.FLUID.get(new Identifier(ignitionSource)));
+            builder.lightWithFluid(Registries.FLUID.get(new Identifier(ignitionSource)));
         else if (ignitionType.equalsIgnoreCase("item"))
-            builder.lightWithItem(Registry.ITEM.get(new Identifier(ignitionSource)));
+            builder.lightWithItem(Registries.ITEM.get(new Identifier(ignitionSource)));
 
         if (returnDim != null)
             builder.returnDim(new Identifier(returnDim), false);

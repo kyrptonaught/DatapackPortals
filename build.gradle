@@ -24,7 +24,7 @@ dependencies {
 	}
 
 	//customportalapi
-	modImplementation include ('net.kyrptonaught:customportalapi:0.0.1-beta57-1.19'){
+	modImplementation include ('net.kyrptonaught:customportalapi:0.0.1-beta58-1.19'){
 			exclude group: "net.fabricmc.fabric-api", module: "fabric-gametest-api-v1"
 
 	}
