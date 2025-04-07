@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -24,7 +24,7 @@ dependencies {
 	}
 
 	//customportalapi
-	modImplementation include('net.kyrptonaught:customportalapi:0.0.1-beta66-1.21') {
+	modImplementation include('net.kyrptonaught:customportalapi:0.0.1-beta68-1.21.4') {
 		exclude group: "net.fabricmc.fabric-api"
 		exclude module: "sodium"
 	}
